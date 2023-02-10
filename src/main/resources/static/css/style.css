@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+#wrap {
+	width:1200px;
+	margin:auto;
+}
+
+
+header {
+	height:70px;
+	background-color:#af90c8;
+}
+
+.btn {
+	background-color:rgba(175, 144, 200, 0.92);
+}
+
+
+.contents > .bg-box {
+	width:400px;
+	background-color:rgba(175, 144, 200, 0.11);
+}
+
+.bg-box > .join-box {
+	width:200px;
+	margin:auto;
+}
+
+footer {
+	height:50px;
+	background-color:#af90c8;
+}
