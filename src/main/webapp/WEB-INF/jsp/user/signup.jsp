@@ -23,14 +23,14 @@
 					<div class="join-box my-5">
 						<h2 class="text-center">회원가입</h2>
 						<div class="d-flex">
-							<input type="text" placeholder="Username" id="idInput" class="form-control mt-2"> 
+							<input type="text" placeholder="ID" id="idInput" class="form-control mt-2"> 
 							<button type="button" id="duplicateBtn" class="btn btn-xs btn-block mt-2">중복확인</button>
 						</div>
 						<input type="password" placeholder="Password" id="passwordInput" class="form-control mt-2">
 						<input type="password" placeholder="비밀번호 확인" id="passwordConfirmInput" class="form-control mt-2">
 						<input type="text" placeholder="이름" id="nameInput" class="form-control mt-2">
 						<input type="text" placeholder="이메일" id="emailInput" class="form-control mt-2">
-						<button type="button" id="joinBtn" class="btn btn-block mt-2">가입</button>
+						<button type="button" id="signUpBtn" class="btn btn-block mt-2">가입</button>
 					</div>
 				</div>
 			</section>
@@ -40,11 +40,13 @@
 
 	<script>
 		$(document).ready(function() {
-			$("#joinBtn").on("click", function() {
-				let id = ${"#idInput"}.val();
-				let password = ${"#passwordInput"}.val();
-				let name = ${"#nameInput"}.val();
-				let email = ${"emailInput"}.val();
+			
+			$("#signUpBtn").on("click", function() {
+				let id = $("#idInput").val();
+				let password = $("#passwordInput").val();
+				let passwordConfirm = $("#passwordConfirmInput").val();
+				let name = $("#nameInput").val();
+				let email = $("emailInput").val();
 				
 				if(id == "") {
 					alert("아이디를 입력해주세요");
@@ -57,7 +59,7 @@
 				}
 				
 				if(password != passwordConfirm) {
-					alert("비밀번호가 일치하지 않습니다");
+					alert("비밀번호 일치여부를 확인하세요");
 					return ;
 				}
 				
@@ -70,6 +72,27 @@
 					alert("이메일을 입력하세요")
 					return ;
 				}
+				
+				
+				$.ajax({
+					type:"post"
+					, url:"/user/signup"
+					, data:{"loginId":id, "password":password, "name":name, "email":email}
+					, success:function(data) {
+						if(data.result == "success") {
+							location.href = "/user/signin/view";
+						} else {
+							alert("회원가입 실패");
+						}
+					}
+					, error:function() {
+						alert("회원가입 에러");
+					}
+					
+				});
+				
+				
+				
 			});
 		});
 	</script>
