@@ -3,6 +3,8 @@ package com.yjh.jeansgram.user.dao;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.yjh.jeansgram.user.model.User;
+
 @Repository
 public interface UserDAO {
 	
@@ -15,4 +17,8 @@ public interface UserDAO {
 	// loginId 가 일치하는 행이 몇개인지 확인
 	public int selectCountByLoginId(String loginId);
 	
+	
+	public User selectUser(
+			@Param("loginId")String loginId
+			,@Param("password")String password);
 }

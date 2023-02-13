@@ -22,14 +22,63 @@
 				<div class="bg-box">
 					<div class="join-box my-5">
 						<h2 class="text-center">로그인</h2>
-						<input type="text" placeholder="ID" id="idInput" class="form-control mt-2"> 
-						<input type="password" placeholder="Password" id="passwordInput" class="form-control mt-2">
-						<button type="button" id="signInBtn" class="btn btn-block mt-2">로그인</button>
+						<form id="LoginForm">
+							<input type="text" placeholder="ID" id="loginIdInput" class="form-control mt-2"> 
+							<input type="password" placeholder="Password" id="passwordInput" class="form-control mt-2">
+							<button type="submit" id="loginBtn" class="btn btn-block mt-2">로그인</button>
+							<button type="button" id="signUpBtn" class="btn btn-block mt-2">가입하기</button>
+						</form>
 					</div>
 				</div>
 			</section>
 			<c:import url="/WEB-INF/jsp/include/footer.jsp" />
 		</div>
+		
+		<script>
+			$(document).ready(function() {
+			
+				$("#LoginForm").on("submit", function(e) {
+			//	$("#loginBtn").on("click", function() {
+				
+					// 해당 이벤트의 기능을 모두 취소한다
+					e.preventDefault();
+				
+					let loginId = $("#loginIdInput").val();
+					let password = $("#passwordInput").val();
+					
+					if(loginId == "") {
+						alert("아이디를 입력하세요");
+						return ;
+					}
+					
+					if(password == "") {
+						alert("비밀번호를 입력하세요");
+						return ;
+						
+					}
+					
+					$.ajax({
+						type:"post"
+						, url:"/user/signin"
+						, data:{"loginId":loginId, "password":password}
+						, success:function(data) {
+							
+							if(data.result == "success") {
+								location.href = "/post/timeline/view";
+							} else {
+								alert("아이디/패스워드를 확인해주세요");
+							}
+							
+						}
+						, error:function() {
+							alert("로그인 에러");
+						}
+					});
+										
+				});
+				
+			});
+		</script>
 </body>
 
 

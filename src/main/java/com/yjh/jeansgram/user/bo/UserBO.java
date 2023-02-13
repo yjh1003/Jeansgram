@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.yjh.jeansgram.common.EncryptUtils;
 import com.yjh.jeansgram.user.dao.UserDAO;
+import com.yjh.jeansgram.user.model.User;
 
 @Service
 public class UserBO {
@@ -36,6 +37,14 @@ public class UserBO {
 //		}
 		
 		return count != 0;
+	}
+	
+	public User getUser(String loginId, String password) {
+		
+		String encryptPassword = EncryptUtils.md5(password);
+		
+		return userDAO.selectUser(loginId, encryptPassword);
+		
 	}
 	
 }
