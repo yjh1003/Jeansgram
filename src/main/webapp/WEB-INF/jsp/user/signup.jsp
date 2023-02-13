@@ -22,15 +22,22 @@
 				<div class="bg-box">
 					<div class="join-box my-5">
 						<h2 class="text-center">회원가입</h2>
-						<div class="d-flex">
-							<input type="text" placeholder="ID" id="idInput" class="form-control mt-2"> 
-							<button type="button" id="duplicateBtn" class="btn btn-xs btn-block mt-2">중복확인</button>
+						<div class="d-flex  mt-3">
+							<input type="text" id="loginIdInput" class="form-control" placeholder="아이디">
+							<button type="button" class="btn btn-info btn-sm ml-2" id="isDuplicateBtn">중복확인</button>
 						</div>
-						<input type="password" placeholder="Password" id="passwordInput" class="form-control mt-2">
-						<input type="password" placeholder="비밀번호 확인" id="passwordConfirmInput" class="form-control mt-2">
-						<input type="text" placeholder="이름" id="nameInput" class="form-control mt-2">
-						<input type="text" placeholder="이메일" id="emailInput" class="form-control mt-2">
-						<button type="button" id="signUpBtn" class="btn btn-block mt-2">가입</button>
+						
+						<div class="small text-success d-none" id="availableText">사용가능한 아이디 입니다</div>
+						<div class="small text-danger d-none" id="duplicateText">중복된 아이디 입니다</div>
+					
+						<input type="password" id="passwordInput" class="form-control mt-3" placeholder="패스워드">
+						<input type="password" id="passwordConfirmInput" class="form-control mt-3" placeholder="패스워드 확인">
+						
+						<input type="text" id="nameInput" class="form-control mt-3" placeholder="이름">
+						<input type="text" id="emailInput" class="form-control mt-3" placeholder="이메일">
+						
+						<button type="button" id="signUpBtn" class="btn btn-info btn-block mt-3">회원가입</button>
+				
 					</div>
 				</div>
 			</section>
@@ -41,21 +48,74 @@
 	<script>
 		$(document).ready(function() {
 			
+			var isDuplicateCheck = false;
+			var isDuplicateId = true;
+			
+			$("#isDuplicateBtn").on("click", function() {
+				let id = $("#loginIdInput").val();
+				
+				if(id == "") {
+					alert("아이디를 입력하세요");
+					return;
+				}
+				
+				$.ajax({
+					type:"get"
+					, url:"/user/duplicate_id"
+					, data:{"loginId":id}
+					, success:function(data) {
+						isDuplicateCheck = true;
+						
+						if(data.is_duplicate) {  // 중복된 상태
+							
+							isDuplicateId = true;
+							$("#duplicateText").removeClass("d-none");
+							$("#availableText").addClass("d-none");
+						} else { // 중복 안된 상태
+							
+							isDuplicateId = false;
+							$("#availableText").removeClass("d-none");
+							$("#duplicateText").addClass("d-none");
+						}
+						
+					}
+					, error:function() {
+						alert("중복확인 에러");
+					}
+				});
+				
+			});
+			
+			
 			$("#signUpBtn").on("click", function() {
-				let id = $("#idInput").val();
+				let id = $("#loginIdInput").val();
 				let password = $("#passwordInput").val();
 				let passwordConfirm = $("#passwordConfirmInput").val();
 				let name = $("#nameInput").val();
-				let email = $("emailInput").val();
+				let email = $("#emailInput").val();
 				
 				if(id == "") {
-					alert("아이디를 입력해주세요");
+					alert("아이디를 입력하세요");
+					return;
+				}
+				
+				// 중복체크 여부 유효성 검사 
+				//if(isDuplicateCheck == false) {
+				if(!isDuplicateCheck) {
+					alert("아이디 중복확인을 해주세요");
+					return ;
+				}
+				
+				// 아이디 중복여부 유효성 검사 
+				// 중복된 상태인 경우 얼럿창 노출
+				if(isDuplicateId) {
+					alert("중복된 아이디 입니다");
 					return ;
 				}
 				
 				if(password == "") {
 					alert("비밀번호를 입력하세요");
-					return ;
+					retrun;
 				}
 				
 				if(password != passwordConfirm) {
@@ -69,7 +129,7 @@
 				}
 				
 				if(email == "") {
-					alert("이메일을 입력하세요")
+					alert("이메일을 입력하세요");
 					return ;
 				}
 				
@@ -88,13 +148,14 @@
 					, error:function() {
 						alert("회원가입 에러");
 					}
-					
 				});
 				
 				
-				
 			});
+		
+			
 		});
+	
 	</script>
 
 

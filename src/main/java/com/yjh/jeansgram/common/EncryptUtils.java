@@ -4,9 +4,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class EncryptUtils {
-
+	
 	// md5를 통한 암호화 기능
 	public static String md5(String message) {
+		
 		String resultData = "";
 		try {
 			MessageDigest md = MessageDigest.getInstance("md5");
@@ -21,12 +22,11 @@ public class EncryptUtils {
 			}
 			
 		} catch (NoSuchAlgorithmException e) {
-
+			
 			e.printStackTrace();
 		}
 		
 		return resultData;
-		
 	}
 	
 }

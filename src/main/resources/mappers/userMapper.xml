@@ -7,8 +7,8 @@
 	<mapper namespace="com.yjh.jeansgram.user.dao.UserDAO">  
 		
 		<insert id="insertUser" parameterType="map">
-			INSERT INTO
-				`sns_user`
+		INSERT INTO
+			`user`
 			(
 				`loginId`
 				, `password`
@@ -18,7 +18,7 @@
 				, `updatedAt`
 			)
 			VALUE 
-			( 
+			(
 				#{loginId}
 				, #{password}
 				, #{name}
@@ -27,4 +27,13 @@
 				, now()
 			)
 		</insert>
+		
+		<select id="selectCountByLoginId" parameterType="string" resultType="int">
+			SELECT
+				count(1)
+			FROM
+				`user`
+			WHERE
+				`loginId` = #{loginId}
+		</select>
 	</mapper>
