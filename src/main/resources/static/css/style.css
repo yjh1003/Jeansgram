@@ -15,7 +15,6 @@ header {
 	background-color:rgba(175, 144, 200, 0.92);
 }
 
-
 .contents > .bg-box {
 	width:400px;
 	background-color:rgba(175, 144, 200, 0.11);
@@ -24,6 +23,27 @@ header {
 .bg-box > .join-box {
 	width:200px;
 	margin:auto;
+}
+
+.contents > .timeline {
+	width:500px;
+}
+
+.upload {
+	width:450px;
+	height:100px;
+}
+
+.namebox {
+	width:450px;
+	height:40px;
+	background-color:#af90c8;
+}
+
+.comment {
+	width:430px;
+	height:20px;
+	background-color:#af90c8;
 }
 
 footer {

@@ -12,4 +12,7 @@ public class PostController {
 	public String timeline() {
 		return "post/timeline";
 	}
+	
 }
+
+
