@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+
+header {
+	height:70px;
+	background-color:#af90c8;
+}
+
+.btn {
+	background-color:rgba(175, 144, 200, 0.92);
+}
+
+
+.timeline-box {
+	width:500px;
+}
+
+.upload-icon {
+	font-size:26px;
+}
+
+footer {
+	height:50px;
+	background-color:#af90c8;
+}

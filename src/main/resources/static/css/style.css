@@ -25,21 +25,6 @@ header {
 	margin:auto;
 }
 
-.contents > .timeline {
-	width:500px;
-}
-
-.upload {
-	width:450px;
-	height:100px;
-}
-
-.namebox {
-	width:450px;
-	height:40px;
-	background-color:#af90c8;
-}
-
 .comment {
 	width:430px;
 	height:20px;

@@ -6,51 +6,133 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Jeansgram</title>
+<title>타임라인</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
 
-<link rel="stylesheet" href="/static/css/style.css" type="text/css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+<link rel="stylesheet" href="/static/css/style2.css" type="text/css">
 <body>
 
-	<div class="container">
+<div class="container">
 		<c:import url="/WEB-INF/jsp/include/header.jsp" />
-		<section class="contents d-flex justify-content-center">
-			<div class="timeline">
-					<div class="upload mt-4">
-						<div class="d-flex justify-content-between">
-							<i class="bi bi-image my-5 ml-2"></i>
-							<a href="/post/create/view" class="btn my-5 mr-2 text-white">업로드</a>
-						</div>
+		<section class="d-flex justify-content-center">
+			<!-- 타임라인 -->
+			<div class="timeline-box">
+				<!-- 입력 박스 -->
+				<div class="input-box border rounded">
+					<textarea class="form-control border-0" rows="5" id="contentInput"></textarea>
+					
+					<div class="d-flex justify-content-between">
+						<input type="file" id="fileInput" class="d-none" id="fileInput">
+						<div class="upload-icon text-info ml-2" id="imageUploadBtn"><i class="bi bi-card-image"></i> </div>
+						<button type="button" class="btn btn-info" id="uploadBtn">업로드</button>
 					</div>
-						<div class="namebox mt-3">
-						yjjeans
+				</div>
+				<!-- /입력 박스 -->
+				
+				<!-- 카드 들 -->
+				<div class="card-list">
+					<!-- 카드 -->
+					<div class="card mt-4">
+						<div class="d-flex justify-content-between p-2">
+							<div>yjeans</div>
+							<div><i class="bi bi-three-dots"></i></div>
 						</div>
 						<div>
-							<img class="mt-3" src="https://cdn.pixabay.com/photo/2016/11/23/14/37/blur-1853262_960_720.jpg" width="400"><br>
-							<i class="bi bi-heart-fill"></i> 좋아요 11개 <br>
-							<textbox>yjjeans   안녕하세요. 오늘 추천해드릴 종목은 ... </textbox> <br>
+							<img width="100%" src="https://cdn.pixabay.com/photo/2023/01/23/09/26/cat-7738210_960_720.jpg">
 						</div>
-						<div class="comment">댓글</div>						
-							<textbox>latte_1023 좋은정보 감사드려요^^ </textbox> <br>
-							<textbox>latte_1023 좋은정보 감사드려요^^ </textbox> <br>
-						<div class="d-flex justify-content-between">
-							<input type="text" class="form-control" placeholder="">
-							<a href="/post/timeline/view" class="btn text-white">게시</a>
+						
+						<div class="p-2">
+							<i class="bi bi-heart"></i> 좋아요 11개
 						</div>
+						
+						<div class="p-2">
+							<b>yjeans</b> 안녕하세요 오늘 추천드릴 종목은..
+						</div>
+						
+						<!--  댓글 들 -->
+						<div class="commnet-box p-2">
+							<div>댓글</div>
+							<hr>
+							<div><b>유재석</b> 우와 진짜 이쁘다</div>
+							<div><b>조세호</b> 엌!</div>
+							
+							<div class="d-flex">
+								<input type="text" class="form-control">
+								<button type="button" class="btn btn-primary">게시</button>
+							</div>
+						</div>
+						
+						<!--  /댓글 들 -->
+						
+					
+					</div>
+					<!-- /카드 -->
+										
+					
+				
+				</div>
+				<!-- /카드 들 -->
+				
 				
 			</div>
+			<!-- /타임라인 -->
 		</section>
 		<c:import url="/WEB-INF/jsp/include/footer.jsp" />
-	</div>
+		
 	
+	</div>
 	<script>
 		$(document).ready(function() {
 			
+			$("#uploadBtn").on("click", function() {
+				
+				let content = $("#contentInput").val();
+				if(content == "") {
+					
+					alert("내용을 입력하세요");
+					return;
+				}
+				
+				// 파일이 선택되지 않았을때
+				if($("#fileInput")[0].files.length == 0) {
+					alert("파일을 선택해주세요");
+					return;
+				}
+				
+				var formData = new formData();
+				formData.append("content", content);
+				formData.append("file", $("#fileInput")[0].files[0]);
+				
+				$.ajax({
+					type:"post"
+					, url:"/post/create"
+					, data:formData
+					, enctype:"multipart/form-data"
+					, processData:false
+					, contentType:false
+					, success:function(data) {
+						if(data.result = "success")
+							location.reload();
+						} else {
+							alert("업로드 실패");
+						}
+						
+					, error:function() {
+						alert("업로드 에러");
+					}
+				});
+			});
+			
+			$("#imageUploadBtn").on("click", function() {
+				// 파일 인풋을 클릭한 효과
+				$("#fileInput").click();
+			});
 		});
 	</script>
 </body>
