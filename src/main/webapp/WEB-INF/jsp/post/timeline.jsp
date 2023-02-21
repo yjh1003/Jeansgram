@@ -37,14 +37,15 @@
 				
 				<!-- 카드 들 -->
 				<div class="card-list">
+					<c:forEach var="post" items="${postList }" >
 					<!-- 카드 -->
 					<div class="card mt-4">
 						<div class="d-flex justify-content-between p-2">
-							<div>yjeans</div>
+							<div>${post.userName }</div>
 							<div><i class="bi bi-three-dots"></i></div>
 						</div>
 						<div>
-							<img width="100%" src="https://cdn.pixabay.com/photo/2023/01/23/09/26/cat-7738210_960_720.jpg">
+							<img width="100%" src="${post.imagePath }">
 						</div>
 						
 						<div class="p-2">
@@ -52,7 +53,7 @@
 						</div>
 						
 						<div class="p-2">
-							<b>yjeans</b> 안녕하세요 오늘 추천드릴 종목은..
+							<b>${post.userName }</b> ${post.content }
 						</div>
 						
 						<!--  댓글 들 -->
@@ -73,7 +74,9 @@
 					
 					</div>
 					<!-- /카드 -->
-										
+					
+					</c:forEach>
+					
 					
 				
 				</div>
@@ -84,56 +87,65 @@
 			<!-- /타임라인 -->
 		</section>
 		<c:import url="/WEB-INF/jsp/include/footer.jsp" />
-		
+				
+	
 	
 	</div>
+	
 	<script>
-		$(document).ready(function() {
+	$(document).ready(function() {
+		
+		$("#uploadBtn").on("click", function() {
 			
-			$("#uploadBtn").on("click", function() {
+			let content = $("#contentInput").val();
+			if(content == "") {
 				
-				let content = $("#contentInput").val();
-				if(content == "") {
-					
-					alert("내용을 입력하세요");
-					return;
-				}
-				
-				// 파일이 선택되지 않았을때
-				if($("#fileInput")[0].files.length == 0) {
-					alert("파일을 선택해주세요");
-					return;
-				}
-				
-				var formData = new formData();
-				formData.append("content", content);
-				formData.append("file", $("#fileInput")[0].files[0]);
-				
-				$.ajax({
-					type:"post"
-					, url:"/post/create"
-					, data:formData
-					, enctype:"multipart/form-data"
-					, processData:false
-					, contentType:false
-					, success:function(data) {
-						if(data.result = "success")
-							location.reload();
-						} else {
-							alert("업로드 실패");
-						}
-						
-					, error:function() {
-						alert("업로드 에러");
+				alert("내용을 입력하세요");
+				return;
+			}
+			
+			// 파일이 선택되지 않았을때
+			if($("#fileInput")[0].files.length == 0) {
+				alert("파일을 선택해주세요");
+				return;
+			}
+			
+			var formData = new FormData();
+			formData.append("content", content);
+			formData.append("file", $("#fileInput")[0].files[0]);
+			
+			$.ajax({
+				type:"post"
+				, url:"/post/create"
+				, data:formData
+				, enctype:"multipart/form-data"
+				, processData:false
+				, contentType:false
+				, success:function(data) {
+					if(data.result = "success") {
+						location.reload();
+					} else {
+						alert("업로드 실패");
 					}
-				});
+					
+				}
+				, error:function() {
+					alert("업로드 에러");
+				}
 			});
 			
-			$("#imageUploadBtn").on("click", function() {
-				// 파일 인풋을 클릭한 효과
-				$("#fileInput").click();
-			});
+			
+			
 		});
+		
+		
+		
+		$("#imageUploadBtn").on("click", function() {
+			// 파일 인풋을 클릭한 효과
+			$("#fileInput").click();
+		});
+		
+	})
 	</script>
 </body>
 </html>
