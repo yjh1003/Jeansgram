@@ -50,8 +50,7 @@
 						
 						<div class="p-2">
 							${post.like }
-							<i class="bi bi-heart heart-btn" data-post-id="${post.id }"></i> ${post.likeCount }개
-							<i class="bi bi-heart-fill heart-fill-btn"></i>
+							<i class="bi bi-heart heart-btn" data-post-id="${post.id }"></i> 좋아요 ${post.likeCount }개
 						</div>
 						
 						<div class="p-2">

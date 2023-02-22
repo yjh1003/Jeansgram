@@ -39,7 +39,7 @@
 			FROM
 				`like`
 			WHERE
-				`postId = #{postId}
+				`postId` = #{postId}
 				AND `userId` = #{userId}
 				
 		</select>
