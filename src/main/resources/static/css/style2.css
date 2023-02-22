@@ -19,6 +19,14 @@ header {
 	font-size:26px;
 }
 
+.heart-btn {
+    color:red;
+}
+
+.heart-fill-btn {
+	color:red;
+}
+
 footer {
 	height:50px;
 	background-color:#af90c8;

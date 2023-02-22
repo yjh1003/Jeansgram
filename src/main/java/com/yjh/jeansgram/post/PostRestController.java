@@ -44,25 +44,7 @@ public class PostRestController {
 		
 	}
 	
-	@GetMapping("/like")
-	public Map<String, String> like(
-			@RequestParam("postId") int postId
-			, HttpSession session) {
-		
-		int userId = (Integer)session.getAttribute("userId");
-		
-		int count = postBO.addLike(userId, postId);
-		
-		Map<String, String> result = new HashMap<>();
-		if(count == 1) {
-			result.put("result", "success");
-		} else {
-			result.put("result", "fail");
-		}
-		
-		return result;
-		
-	}
+
 	
 	
 }

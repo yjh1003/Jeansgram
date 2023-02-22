@@ -7,7 +7,22 @@ public class PostDetail {
 	private String userName;
 	private String content;
 	private String imagePath;
+	private int likeCount;
+	private boolean isLike;
 	
+	
+	public boolean isLike() {
+		return isLike;
+	}
+	public void setLike(boolean isLike) {
+		this.isLike = isLike;
+	}
+	public int getLikeCount() {
+		return likeCount;
+	}
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
 	public int getId() {
 		return id;
 	}

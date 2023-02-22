@@ -49,7 +49,9 @@
 						</div>
 						
 						<div class="p-2">
-							<i class="bi bi-heart heart-btn" data-post-id="${post.id }"></i> 좋아요 11개
+							${post.like }
+							<i class="bi bi-heart heart-btn" data-post-id="${post.id }"></i> ${post.likeCount }개
+							<i class="bi bi-heart-fill heart-fill-btn"></i>
 						</div>
 						
 						<div class="p-2">
@@ -64,8 +66,8 @@
 							<div><b>조세호</b> 엌!</div>
 							
 							<div class="d-flex">
-								<input type="text" class="form-control">
-								<button type="button" class="btn btn-primary">게시</button>
+								<input type="text" class="form-control" id="commentInput${post.id }">
+								<button type="button" class="btn btn-primary comment-btn" data-post-id="${post.id}">게시</button>
 							</div>
 						</div>
 						
@@ -95,10 +97,50 @@
 	<script>
 	$(document).ready(function() {
 		
+		$(".comment-btn").on("click", function() {
+		
+			// post id, 작성한 댓글내용.
+			let postId = $(this).data("post-id");
+			
+			// 버튼의 이전 태그를 객체화
+			// console.log($(this).siblings()[0]); 형제태그
+			// let comment = $(this).prev().val(); // 형제태그 $(this).prev()가 input값을 의미
+			// alert(comment);
+			
+			// id 셀렉터를 문자열 연산으로 완성
+			let comment = $("#commentInput" + postId).val();
+			if(comment == "") {
+				
+				alert("댓글을 입력하세요");
+				return;
+			}
+			
+			
+			$.ajax({
+				type:"post"
+				, url:"/post/comment/create"
+				, data:{"postId":postId, "content":comment}
+				, success:function(data) {
+					if(data.result == "success") {
+						location.reload();
+					} else {
+						alert("댓글 작성 실패");
+					}
+				}
+				, error:function() {
+					alert("댓글 작성 에러");
+				}
+			});
+			
+		});
+		
+		
 		$(".heart-btn").on("click", function() {
 
 			// 해당하는 버튼에 대응되는 post id 를 얻어와야한다. 
 			let id = $(this).data("post-id");
+			
+			
 			
 			$.ajax({
 				type:"get"
@@ -155,8 +197,8 @@
 				, error:function() {
 					alert("업로드 에러");
 				}
-			});
 			
+			});
 			
 			
 		});

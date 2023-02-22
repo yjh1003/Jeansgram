@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.yjh.jeansgram.common.FileManagerService;
 import com.yjh.jeansgram.post.dao.PostDAO;
+import com.yjh.jeansgram.post.like.bo.LikeBO;
 import com.yjh.jeansgram.post.model.Post;
 import com.yjh.jeansgram.post.model.PostDetail;
 import com.yjh.jeansgram.user.bo.UserBO;
@@ -23,6 +24,9 @@ public class PostBO {
 	@Autowired
 	private UserBO userBO;
 	
+	@Autowired
+	private LikeBO likeBO;
+	
 	public int addPost(int userId, String content, MultipartFile file) {
 		// 파일을 저장하고, 접근 경로를 만든다.
 		
@@ -31,7 +35,7 @@ public class PostBO {
 		return postDAO.insertPost(userId, content, imagePath);
 	}
 	
-	public List<PostDetail> getPostList() {
+	public List<PostDetail> getPostList(int userId) {
 		
 		List<Post> postList = postDAO.selectPostList();
 		
@@ -46,8 +50,14 @@ public class PostBO {
 			postDetail.setImagePath(post.getImagePath());
 			
 			User user = userBO.getUserById(post.getUserId());
+			// 좋아요 개수 조회
+			int likeCount = likeBO.likeCount(post.getId());
 			
+			// 좋아요 여부 조회
+			boolean isLike = likeBO.isLike(post.getId(), userId);
+			postDetail.setLike(isLike);
 			
+			postDetail.setLikeCount(likeCount);
 			// userName 값을 저장한다. 
 			postDetail.setUserName(user.getName());
 			
@@ -59,8 +69,6 @@ public class PostBO {
 		
 	}
 	
-	public int addLike(int userId, int postId) {
-		return postDAO.insertLike(userId, postId);
-	}
+	
 
 }

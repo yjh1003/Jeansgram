@@ -9,7 +9,7 @@ public interface CommentDAO {
 	public int insertComment(
 			@Param("userId") int userId
 			, @Param("postId") int postId
-			, @Param("comment") String comment);
+			, @Param("content") String content);
 		
 
 }
