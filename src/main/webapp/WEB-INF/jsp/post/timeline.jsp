@@ -52,7 +52,7 @@
 							
 							<c:choose>
 								<c:when test="${post.like }">
-									<i class="bi bi-heart-fill text-danger"></i>
+									<i class="bi bi-heart-fill text-danger heart-fill-btn" data-post-id="${post.id }"></i>
 								</c:when>
 								<c:otherwise>
 									<i class="bi bi-heart heart-btn" data-post-id="${post.id }"></i> 
@@ -97,13 +97,49 @@
 			<!-- /타임라인 -->
 		</section>
 		<c:import url="/WEB-INF/jsp/include/footer.jsp" />
-				
+		<!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+		  Launch demo modal
+		</button>
+
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-body">
+		        ...
+		      </div>
+		      
+		    </div>
+		  </div>
+		</div>		
 	
 	
 	</div>
 	
 	<script>
 	$(document).ready(function() {
+		
+		$(".heart-fill-btn").on("click", function() {
+			let postId = $(this).data("post-id");
+			
+			$.ajax({
+				type:"get"
+				, url:"/post/unlike"
+				, data:{"postId":postId}
+				, success:function(data) {
+					if(data.result == "success") {
+						location.reload();
+					} else {
+						alert("좋아요 취소 실패");
+					}
+				}
+				, error:function() {
+					alert("좋아요 취소 에러");
+				}
+			});
+		});
+		
 		
 		$(".comment-btn").on("click", function() {
 		

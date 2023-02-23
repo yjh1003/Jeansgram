@@ -32,4 +32,9 @@ public class LikeBO {
 		
 	}
 	
+	// postId와 userId를 전달받고 해당 좋아요 행을 삭제한다.
+	public int unlike(int postId, int userId) {
+		return likeDAO.deleteLike(postId, userId);
+	}
+	
 }
