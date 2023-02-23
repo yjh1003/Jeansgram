@@ -42,25 +42,30 @@
 					<div class="card mt-4">
 						<div class="d-flex justify-content-between p-2">
 							<div>${post.userName }</div>
-							<div><i class="bi bi-three-dots"></i></div>
+							
+							<%-- 로그인한 userId와 해당 게시글의 작성자 userId 가 일치하는 경우만 more-btn을 보여줘라 --%>
+							<c:if test="${userId eq post.userId }">
+								<!--   -->
+								<div class="more-btn" data-toggle="modal" data-target="#moreMenuModal" data-post-id="${post.id }"><i class="bi bi-three-dots"></i></div>
+							</c:if>
 						</div>
 						<div>
 							<img width="100%" src="${post.imagePath }">
 						</div>
 						
 						<div class="p-2">
-							
 							<c:choose>
 								<c:when test="${post.like }">
 									<i class="bi bi-heart-fill text-danger heart-fill-btn" data-post-id="${post.id }"></i>
 								</c:when>
 								<c:otherwise>
-									<i class="bi bi-heart heart-btn" data-post-id="${post.id }"></i> 
+									<i class="bi bi-heart heart-btn" data-post-id="${post.id }"></i>
 								</c:otherwise>
+
 							</c:choose>
-							좋아요 ${post.likeCount }개
+							 좋아요 ${post.likeCount }개
 						</div>
-							
+						
 						<div class="p-2">
 							<b>${post.userName }</b> ${post.content }
 						</div>
@@ -69,13 +74,14 @@
 						<div class="commnet-box p-2">
 							<div>댓글</div>
 							<hr>
-							<c:forEach var="comment" items="${post.commentList }">
-								<div><b>${comment.userName }</b> ${comment.content }</div>
+							
+							<c:forEach var="comment" items="${post.commentList }" >
+							<div><b>${comment.userName }</b> ${comment.content }</div>
 							</c:forEach>
 							
 							<div class="d-flex">
 								<input type="text" class="form-control" id="commentInput${post.id }">
-								<button type="button" class="btn btn-primary comment-btn" data-post-id="${post.id}">게시</button>
+								<button type="button" class="btn btn-primary comment-btn" data-post-id="${post.id }">게시</button>
 							</div>
 						</div>
 						
@@ -97,28 +103,56 @@
 			<!-- /타임라인 -->
 		</section>
 		<c:import url="/WEB-INF/jsp/include/footer.jsp" />
-		<!-- Button trigger modal -->
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
-		  Launch demo modal
-		</button>
+		
 
-		<!-- Modal -->
-		<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-body">
-		        ...
-		      </div>
-		      
-		    </div>
-		  </div>
-		</div>		
 	
+	</div>
 	
+	<!-- Modal -->
+	<div class="modal fade" id="moreMenuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	     
+	      <div class="modal-body text-center">
+	        	<a href="#" id="deleteBtn">삭제하기</a>
+	      </div>
+	      
+	    </div>
+	  </div>
 	</div>
 	
 	<script>
 	$(document).ready(function() {
+		
+		$(".more-btn").on("click", function() {
+			// 해당 more-btn 태그에 있는 post-id를 모달의 a태그에 넣는다.
+			let postId = $(this).data("post-id");
+
+			
+			// data-post-id=""
+			$("#deleteBtn").data("post-id", postId);
+			
+		});
+		
+		$("#deleteBtn").on("click", function() {
+			let postId = $(this).data("post-id");
+			
+			$.ajax({
+				type:"get"
+				, url:"/post/delete"
+				, data:{"postId":postId}
+				, success:function(data) {
+					if(data.result == "success") {
+						location.reload();
+					} else {
+						alert("삭제 실패");
+					}
+				}
+				, error:function() {
+					alert("삭제 에러");
+				}
+			});
+		});
 		
 		$(".heart-fill-btn").on("click", function() {
 			let postId = $(this).data("post-id");
