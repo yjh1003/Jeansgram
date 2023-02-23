@@ -49,10 +49,18 @@
 						</div>
 						
 						<div class="p-2">
-							${post.like }
-							<i class="bi bi-heart heart-btn" data-post-id="${post.id }"></i> 좋아요 ${post.likeCount }개
+							
+							<c:choose>
+								<c:when test="${post.like }">
+									<i class="bi bi-heart-fill text-danger"></i>
+								</c:when>
+								<c:otherwise>
+									<i class="bi bi-heart heart-btn" data-post-id="${post.id }"></i> 
+								</c:otherwise>
+							</c:choose>
+							좋아요 ${post.likeCount }개
 						</div>
-						
+							
 						<div class="p-2">
 							<b>${post.userName }</b> ${post.content }
 						</div>
@@ -61,8 +69,9 @@
 						<div class="commnet-box p-2">
 							<div>댓글</div>
 							<hr>
-							<div><b>유재석</b> 우와 진짜 이쁘다</div>
-							<div><b>조세호</b> 엌!</div>
+							<c:forEach var="comment" items="${post.commentList }">
+								<div><b>${comment.userName }</b> ${comment.content }</div>
+							</c:forEach>
 							
 							<div class="d-flex">
 								<input type="text" class="form-control" id="commentInput${post.id }">

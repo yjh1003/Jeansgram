@@ -26,4 +26,21 @@
   	
   	</insert>
   	
+  	<select id="selectCommentList" parameterType="int"
+  	resultType="com.yjh.jeansgram.post.comment.model.Comment">
+  		SELECT
+  			`id`
+  			, `userId`
+  			, `postId`
+  			, `content`
+  			, `createdAt`
+  			, `updatedAt`
+  		FROM
+  			`comment`
+  		WHERE
+  			`postId` = #{postId}
+  		ORDER BY
+  			`id` DESC
+  			
+  	</select>
   </mapper>
